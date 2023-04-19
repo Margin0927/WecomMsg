@@ -10,7 +10,7 @@
     "license": "Apache",
     "autoload": {
         "psr-4": {
-            "Margin\\": "src/"
+            "WecomMsg\\": "src/WecomMsg/"
         }
     },
     "authors": [

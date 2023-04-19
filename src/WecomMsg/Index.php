@@ -1,57 +1,22 @@
 <?php
-namespace Margin\WecomMsg;
+
+namespace WecomMsg;
+
 class Index
 {
-    
-    private $companyId = '';
+    private $url = 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=';
 
-    private $agentId = '';
-    private $secret = '';
+    private $key = '';
 
-   	public function __construct($companyId,$agentId,$secret)
+   	public function __construct($key)
    	{
-   			$this->companyId = $companyId;
-   			$this->agentId = $agentId;
-   			$this->secret = $secret;
-
+   			$this->key = $key;
    	}
 
-    private function getAccessToken()
+    public function sendText($content)
     {
-        //文件缓存
-        $file = __DIR__."/access_token.txt";
-        if(file_exists($file)){
-            $content = file_get_contents($file);
-            $content = json_decode($content,true);
-            if($content['expire_time'] > time()){
-                return $content['access_token'];
-            }
-        }
-
-        $url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=".$this->companyId."&corpsecret=".$this->secret;
-        $res = $this->httpPost($url);
-        $res = json_decode($res,true);
-        //缓存access_token
-        $content = [
-            'access_token' => $res['access_token'],
-            'expire_time' => time() + 7000
-        ];
-        file_put_contents($file,json_encode($content));
-        return $res['access_token'];
-    }
-
-    public function sendText($content,$userIds)
-    {
-        $url = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=".$this->getAccessToken();
-        $data = [
-            "touser" => $userIds,
-            "msgtype" => "text",
-            "agentid" => $this->agentId,
-            "text" => [
-                "content" => $content
-            ],
-            "safe" => 0
-        ];
+        $url = $this->url.$this->key;
+        $data = ['msgtype' => 'text', 'text' => ['content' => $content]];
         $data = json_encode($data,JSON_UNESCAPED_UNICODE);
         return $this->httpPost($url,[],$data);
     }
