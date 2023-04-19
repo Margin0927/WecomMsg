@@ -18,9 +18,25 @@ class Index
 
     private function getAccessToken()
     {
+        //文件缓存
+        $file = __DIR__."/access_token.txt";
+        if(file_exists($file)){
+            $content = file_get_contents($file);
+            $content = json_decode($content,true);
+            if($content['expire_time'] > time()){
+                return $content['access_token'];
+            }
+        }
+
         $url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=".$this->companyId."&corpsecret=".$this->secret;
         $res = $this->httpPost($url);
         $res = json_decode($res,true);
+        //缓存access_token
+        $content = [
+            'access_token' => $res['access_token'],
+            'expire_time' => time() + 7000
+        ];
+        file_put_contents($file,json_encode($content));
         return $res['access_token'];
     }
 
