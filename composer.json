@@ -1,0 +1,22 @@
+{
+    "name": "margin/wecom_msg",
+    "description": "企业微信消息推送",
+    "require": {
+        "php": ">=7.0",
+        "ext-json": "*",
+        "ext-curl": "*"
+    },
+    "license": "Apache",
+    "autoload": {
+        "psr-4": {
+            "Margin\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Margin",
+            "email": "nts0927@163.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
