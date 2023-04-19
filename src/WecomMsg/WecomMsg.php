@@ -2,7 +2,7 @@
 
 namespace WecomMsg;
 
-class Index
+class WecomMsg
 {
     private $url = 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=';
 
